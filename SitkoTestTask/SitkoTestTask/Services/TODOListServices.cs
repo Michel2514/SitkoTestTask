@@ -6,19 +6,26 @@ namespace SitkoTestTask.Services
 {
     public class TODOListServices : ITODOListService
     {
-        private readonly TestDbContext db;
+        private readonly TestDbContext _db;
+        public TODOListServices(TestDbContext db)
+        {
+            _db = db;
+        }
+
         public async Task<TODOList> TODOListById(Guid tODOListId)
         {
-            var tODOLiistById = await db.TODOLists.FirstOrDefaultAsync(x => x.Id == tODOListId);
+            var tODOLiistById = await _db.TODOLists.FirstOrDefaultAsync(x => x.Id == tODOListId);
             return tODOLiistById ?? new TODOList();
         }
-        public async Task<List<TODOList>> TODOListGetAll() => await db.TODOLists.ToListAsync() ?? new List<TODOList>();
-        public async Task<bool> TODOListCreated(TODOList tODOList)
+        public async Task<List<TODOList>> TODOListGetAllAsync() => await _db.TODOLists.ToListAsync();
+        public List<TODOList> TODOListGetAll()=> _db.TODOLists.ToList();
+        public async Task<bool> TODOListCreatedAsync(TODOList tODOList)
         {
             try
             {
-                await db.TODOLists.AddAsync(tODOList);
-                await db.SaveChangesAsync();
+               
+                await _db.TODOLists.AddAsync(tODOList);
+                await _db.SaveChangesAsync();
                 return true;
             }
             catch (Exception)
@@ -27,14 +34,20 @@ namespace SitkoTestTask.Services
                 return false;
             }
         }
+        public bool TODOListCreated(TODOList tODOList)
+        {
+            _db.TODOLists.Add(tODOList);
+            _db.SaveChanges();
+            return true;
+        }
 
         public async Task<bool> TODOListDeleted(Guid tODOListId)
         {
-            var tODOListDeletedById = await db.TODOLists.FirstOrDefaultAsync(x=> x.Id == tODOListId);
+            var tODOListDeletedById = await _db.TODOLists.FirstOrDefaultAsync(x=> x.Id == tODOListId);
             if (tODOListDeletedById == null)
                 return false;
-            db.TODOLists.Remove(tODOListDeletedById);
-            await db.SaveChangesAsync();
+            _db.TODOLists.Remove(tODOListDeletedById);
+            await _db.SaveChangesAsync();
             return true;
         }
 
@@ -42,14 +55,29 @@ namespace SitkoTestTask.Services
 
         public async Task<bool> TODOListUpdated(TODOList tODOListId)
         {
-            var enyIdTODOList = await db.TODOLists.FirstOrDefaultAsync
+            var enyIdTODOList = await _db.TODOLists.FirstOrDefaultAsync
                 (x => x.Id == tODOListId.Id);
             if(enyIdTODOList == null)
                 return false;
-            db.TODOLists.Update(enyIdTODOList);
-            db.SaveChanges();
+            _db.TODOLists.Update(enyIdTODOList);
+            _db.SaveChanges();
 
             return true;
+        }
+   
+        public Task<List<TODOList>> TODOListActives()
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task<List<TODOList>> TODOListComplitedsAsync(bool completed)
+        {
+            return await _db.TODOLists.Where(x=>x.Completed == completed).ToListAsync();
+        }
+
+        List<TODOList> ITODOListService.TODOListCompliteds(bool completed)
+        {
+            return _db.TODOLists.Where(x => x.Completed == completed).ToList();
         }
     }
 }

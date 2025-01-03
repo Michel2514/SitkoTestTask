@@ -31,11 +31,11 @@ namespace SitkoTestTask.Migrations
                     b.Property<bool>("Completed")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("CreationDate")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime?>("ExecutionDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly?>("ExecutionDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Name")
                         .IsRequired()

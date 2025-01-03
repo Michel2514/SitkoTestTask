@@ -1,0 +1,53 @@
+﻿@page "/TODOListView"
+
+@using SitkoTestTask.Interfaces
+@using SitkoTestTask.Data
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Forms
+@inject NavigationManager Navigator
+
+@inject ITODOListService _servise
+
+
+<h2>TODOList</h2>
+<div>
+<EditForm Model="tODOList" OnValidSubmit="SaveTODOListAsync" >
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <InputDate @bind-Value="tODOList.CreationDate" class="has-validation" />
+    <InputText @bind-Value="tODOList.Name" placeholder="Задача" class="has-validation" />
+        <button type="submit">Сохранить</button>
+
+</EditForm>
+
+<TodoLists/>
+</div>
+@code {
+    TODOList tODOList = new();
+    List<TODOList> allTODOList = new();
+    TodoLists tr = new();
+
+    protected override void OnInitialized()
+    {
+        
+    }
+
+    async void SaveTODOListAsync(){
+        var te = new TODOList { 
+            CreationDate = tODOList.CreationDate,
+            Name = tODOList.Name
+        };
+        var r = await _servise.TODOListCreatedAsync(te);
+    }
+
+    void SaveTODOList()
+    {
+        var te = new TODOList
+            {
+                CreationDate = tODOList.CreationDate,
+                Name = tODOList.Name
+            };
+        var r =  _servise.TODOListCreated(te);
+    }
+}

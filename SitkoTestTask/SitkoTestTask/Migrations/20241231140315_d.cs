@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace SitkoTestTask.Migrations
 {
     /// <inheritdoc />
-    public partial class First : Migration
+    public partial class d : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -17,8 +17,8 @@ namespace SitkoTestTask.Migrations
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
                     Name = table.Column<string>(type: "text", nullable: false),
-                    CreationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ExecutionDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    CreationDate = table.Column<DateOnly>(type: "date", nullable: false),
+                    ExecutionDate = table.Column<DateOnly>(type: "date", nullable: true),
                     Completed = table.Column<bool>(type: "boolean", nullable: false)
                 },
                 constraints: table =>

@@ -1,0 +1,64 @@
+﻿@page "/TODOList"
+@using SitkoTestTask.Interfaces
+@using SitkoTestTask.Data
+@using Microsoft.AspNetCore.Components.Web
+@using Microsoft.AspNetCore.Components.Forms
+
+@inject ITODOListService _servise
+
+
+<h3>TodoLists</h3>
+
+<button class="btn btn-primary" @onclick="AllList">Все</button>
+<button class="btn btn-primary" @onclick="ListComplited">Выполненые</button>
+<button class="btn btn-primary" @onclick="ListActive">Активные</button>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Задача</th>
+            <th>Состояние</th>
+            <th>Дата закрытия</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var forecast in nre)
+        {
+            <tr>
+                <td>@forecast.CreationDate</td>
+                <td>@forecast.Name</td>
+                <td><input type="checkbox" @bind-value="@r" @onclick="@(e=> Complet(forecast.Id))"
+                    /></td>
+                <td>@forecast.ExecutionDate</td>
+                <td></td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+
+@code {
+    bool r;
+    List<TODOList> nre { get; set; } = new();
+
+    void AllList()
+    {
+        nre =   _servise.TODOListGetAll();
+
+    }
+    void ListComplited(){
+
+        nre = _servise.TODOListCompliteds(true);
+    }
+
+    void ListActive()
+    {
+
+        nre = _servise.TODOListCompliteds(false);
+    }
+    void Complet(Guid id){
+        
+    }
+}

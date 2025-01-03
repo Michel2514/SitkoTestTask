@@ -12,8 +12,8 @@ using SitkoTestTask.Data;
 namespace SitkoTestTask.Migrations
 {
     [DbContext(typeof(TestDbContext))]
-    [Migration("20241231065904_First")]
-    partial class First
+    [Migration("20241231140315_d")]
+    partial class d
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,11 +34,11 @@ namespace SitkoTestTask.Migrations
                     b.Property<bool>("Completed")
                         .HasColumnType("boolean");
 
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly>("CreationDate")
+                        .HasColumnType("date");
 
-                    b.Property<DateTime>("ExecutionDate")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<DateOnly?>("ExecutionDate")
+                        .HasColumnType("date");
 
                     b.Property<string>("Name")
                         .IsRequired()
